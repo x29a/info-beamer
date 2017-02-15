@@ -1466,6 +1466,11 @@ static void init_default_texture() {
         GL_RGBA, GL_UNSIGNED_BYTE, white_pixel);
 }
 
+static void glfw_error_callback(int error, const char* description)
+{
+    fprintf(stderr, "glfw error %d (%s)\n", error, description);
+}
+
 int main(int argc, char *argv[]) {
     fprintf(stdout, VERSION_STRING " (" INFO_URL ")\n");
     fprintf(stdout, "Copyright (c) 2015 Florian Wesch <fw@dividuum.de>\n\n");
@@ -1512,6 +1517,7 @@ int main(int argc, char *argv[]) {
     if (inotify_fd == -1)
         die("cannot open inotify: %s", strerror(errno));
 
+    glfwSetErrorCallback(glfw_error_callback);
     av_register_all();
 
     event_base = event_init();
